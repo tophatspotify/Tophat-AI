@@ -1,0 +1,110 @@
+import random
+import time
+
+brainrot_words = ["skibidi", "sigma", "gyatt", "rizz", "zizzle", "whackadoodle"]
+jokes = [
+    "Why don't scientists trust atoms? Because they make up everything!",
+    "What do you get when you cross a snowman and a vampire? Frostbite.",
+    "Why was the math book sad? Because it had too many problems.",
+    "I told my wife she was drawing her eyebrows too high. She looked surprised."
+]
+
+def generate_brainrot_word():
+    return random.choice(brainrot_words)
+
+def generate_joke():
+    return random.choice(jokes)
+
+def get_current_time():
+    t = time.localtime(time.time())
+    return "Current Time: " + time.asctime(t)
+
+def print_board(board):
+    print("  1 2 3")
+    row_labels = ["A", "B", "C"]
+    for idx, row in enumerate(board):
+        print(row_labels[idx] + " " + " | ".join(row))
+        if idx < 2:
+            print("  -+-+-")
+
+def check_win(board, player):
+    for row in board:
+        if all(s == player for s in row):
+            return True
+    for col in range(3):
+        if all(row[col] == player for row in board):
+            return True
+    if all(board[i][i] == player for i in range(3)) or all(board[i][2-i] == player for i in range(3)):
+        return True
+    return False
+
+def get_computer_move(board):
+    available_moves = [(i, j) for i in range(3) for j in range(3) if board[i][j] == " "]
+    return random.choice(available_moves)
+
+def tic_tac_toe():
+    board = [[" " for _ in range(3)] for _ in range(3)]
+    current_player = "X"
+    move_dict = {"A": 0, "B": 1, "C": 2, "1": 0, "2": 1, "3": 2}
+    for _ in range(9):
+        print_board(board)
+        if current_player == "X":
+            move = input("Player X, enter your move (e.g., A1, B2): ").upper()
+            if len(move) != 2 or move[0] not in "ABC" or move[1] not in "123":
+                print("Invalid input. Please enter a valid move.")
+                continue
+            row, col = move_dict[move[0]], move_dict[move[1]]
+        else:
+            row, col = get_computer_move(board)
+            print(f"Computer O plays at {row + 1} {col + 1}")
+
+        if board[row][col] == " ":
+            board[row][col] = current_player
+            if check_win(board, current_player):
+                print_board(board)
+                print(f"Player {current_player} wins!")
+                return
+            current_player = "O" if current_player == "X" else "X"
+        else:
+            print("Invalid move, try again.")
+    print_board(board)
+    print("It's a tie!")
+
+def calculate(expression):
+    try:
+        result = eval(expression)
+        print(f"Result: {result}")
+    except Exception as e:
+        print(f"Error: {e}")
+
+def main():
+    while True:
+        command = input("Enter command: Joke, Brainrot, time, exit, How are you?, Tic Tac Toe, Calculator: ").strip().lower()
+        if command == "brainrot":
+            print("Brainrot word:", generate_brainrot_word())
+        elif command == "joke":
+            print("Joke:", generate_joke())
+        elif command == "time":
+            print(get_current_time())
+        elif command == "exit":
+            print("Exiting program.")
+            break
+        elif command == "how are you":
+            print("Good wbu?")
+            response = input().strip().lower()
+            if response == "good":
+                print("That's great to hear!")
+            elif response == "bad":
+                print("I'm sorry to hear that. I hope you feel better soon.")
+            else:
+                print("I see.")
+        elif command == "tic tac toe":
+            tic_tac_toe()
+        elif command == "calculator":
+            expression = input("Enter a mathematical expression to calculate: ")
+            calculate(expression)
+        else:
+            print("Unknown command. Try 'brainrot', 'joke', 'time', 'exit', 'how are you', 'tic tac toe', or 'calculator'.")
+
+if __name__ == "__main__":
+    main()
