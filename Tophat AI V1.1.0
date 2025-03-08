@@ -1,0 +1,105 @@
+def chat():
+    print("Hello! I am Tophat's Helper Bot! Type 'Help' for a list of commands.")
+    while True:
+        user_input = input("You: ")
+        if user_input.lower() == "help":
+            print("List Of Commands: Brainrot, Joke, Calculator, Weather, Politics, BoyWithUke, Art, Bike Riding, Walking, Video Games, Tic Tac Toe, Timer, Rock Paper Scissors, Number Guessing Game, Hangman, Word Scramble, Quiz Game, 20 Questions, Text Adventure, Word Chain")
+        elif user_input.lower() == "brainrot":
+            random_brainrot = generate_random_word("brainrot")
+            print(f"Here is some brainrot: {random_brainrot}")
+        elif user_input.lower() == "joke":
+            random_joke = generate_random_word("joke")
+            print(f"Here is a joke: {random_joke}")
+        elif user_input.lower() == "calculator":
+            expression = input("Enter a mathematical expression (e.g., 2 ** 3): ")
+            result = calculate(expression)
+            print(f"The result is: {result}")
+        elif user_input.lower() == "weather":
+            random_weather = generate_random_word("weather")
+            print(random_weather)
+            input("You: ")
+            print("It's always good to stay updated with the weather.")
+            input("You: ")
+            print("I don't know much about this subject. What about something else?")
+        elif user_input.lower() == "politics":
+            random_politics = generate_random_word("politics")
+            print(random_politics)
+            input("You: ")
+            print("Politics can be a deep and complex topic.")
+            input("You: ")
+            print("I don't know much about this subject. What about something else?")
+        elif user_input.lower() == "boywithuke":
+            random_boywithuke = generate_random_word("boywithuke")
+            print(random_boywithuke)
+            input("You: ")
+            print("BoyWithUke's music really stands out.")
+            input("You: ")
+            print("I don't know much about this subject. What about something else?")
+        elif user_input.lower() == "art":
+            random_art = generate_random_word("art")
+            print(random_art)
+            input("You: ")
+            print("Art is such a great way to express creativity.")
+            input("You: ")
+            print("I don't know much about this subject. What about something else?")
+        elif user_input.lower() == "bike riding":
+            random_bike_riding = generate_random_word("bike_riding")
+            print(random_bike_riding)
+            input("You: ")
+            print("Bike riding is a fantastic way to stay active.")
+            input("You: ")
+            print("I don't know much about this subject. What about something else?")
+        elif user_input.lower() == "walking":
+            random_walking = generate_random_word("walking")
+            print(random_walking)
+            input("You: ")
+            print("Walking is a great way to clear your mind.")
+            input("You: ")
+            print("I don't know much about this subject. What about something else?")
+        elif user_input.lower() == "video games":
+            random_video_games = generate_random_word("video_games")
+            print(random_video_games)
+            input("You: ")
+            print("Video games can be so immersive and fun.")
+            input("You: ")
+            print("I don't know much about this subject. What about something else?")
+        elif user_input.lower() == "tic tac toe":
+            tic_tac_toe()
+        elif user_input.lower() == "timer":
+            seconds = int(input("Enter the number of seconds for the timer: "))
+            timer(seconds)
+        elif user_input.lower() == "rock paper scissors":
+            rock_paper_scissors()
+        elif user_input.lower() == "number guessing game":
+            number_guessing_game()
+        elif user_input.lower() == "hangman":
+            hangman()
+        elif user_input.lower() == "word scramble":
+            word_scramble()
+        elif user_input.lower() == "quiz game":
+            quiz_game()
+        elif user_input.lower() == "20 questions":
+            twenty_questions()
+        elif user_input.lower() == "text adventure":
+            text_adventure_game()
+        elif user_input.lower() == "word chain":
+            word_chain()
+        elif user_input.lower() == "lets talk":
+            print("Okay!")
+            while True:
+                user_input = input("You: ")
+                if user_input.lower() == "how are you doing?":
+                    print("Great! What about you?")
+                elif user_input.lower() == "good":
+                    print("That's great to hear!")
+                elif user_input.lower() == "bye":
+                    print("Goodbye!")
+                    break
+                elif user_input.lower() == "easier":
+                    print("That's a great song! Mine's Stranger.")
+        elif user_input.lower() == "bye":
+            print("Goodbye!")
+            break
+
+if __name__ == "__main__":
+    chat()
