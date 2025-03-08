@@ -1,4 +1,5 @@
 import random
+import time
 
 def print_board(board):
     for row in board:
@@ -60,12 +61,19 @@ def tic_tac_toe():
         # Switch players
         current_player = "O" if current_player == "X" else "X"
 
+def timer(seconds):
+    for i in range(1, seconds + 1):
+        minutes = i // 60
+        seconds = i % 60
+        print(f"{minutes} minutes and {seconds} seconds have passed")
+        time.sleep(1)
+
 def chat():
     print("Hello! I am Tophat's Helper Bot! Type 'Help' for a list of commands.")
     while True:
         user_input = input("You: ")
         if user_input.lower() == "help":
-            print("List Of Commands: Brainrot, Joke, Calculator, Weather, Politics, BoyWithUke, Art, Bike Riding, Walking, Video Games, Tic Tac Toe")
+            print("List Of Commands: Brainrot, Joke, Calculator, Weather, Politics, BoyWithUke, Art, Bike Riding, Walking, Video Games, Tic Tac Toe, Timer")
         elif user_input.lower() == "brainrot":
             random_brainrot = generate_random_word("brainrot")
             print(f"Here is some brainrot: {random_brainrot}")
@@ -127,6 +135,9 @@ def chat():
             print("I don't know much about this subject. What about something else?")
         elif user_input.lower() == "tic tac toe":
             tic_tac_toe()
+        elif user_input.lower() == "timer":
+            seconds = int(input("Enter the number of seconds for the timer: "))
+            timer(seconds)
         elif user_input.lower() == "lets talk":
             print("Okay!")
             while True:
@@ -145,4 +156,4 @@ def chat():
             break
 
 if __name__ == "__main__":
-    chat()
+    chat()     
