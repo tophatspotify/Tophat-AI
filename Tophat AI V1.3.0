@@ -6,7 +6,7 @@ jokes = [
     "Why don't scientists trust atoms? Because they make up everything!",
     "What do you get when you cross a snowman and a vampire? Frostbite.",
     "Why was the math book sad? Because it had too many problems.",
-    "I told my wife she was drawing her eyebrows too high. She looked surprised."
+    "I told my wife she was drawing her eyebrows too high. She looked surprised.", "Knock knock! 'Whos there?' Orange! 'orange who?' knock knock! 'Whos there?' Me.", "Why should you never take sides in an argument at the dinner table? Trick question. It's the perfect time to take sides because no one's paying attention. Bring Tupperware.", "Where do rainbows go when they've been bad? To prism, so they have time to reflect on what they've done.", "Dogs can't operate MRI machines. But catscan.", "E"
 ]
 
 def generate_brainrot_word():
