@@ -1,0 +1,198 @@
+import random
+import time
+
+# Tic Tac Toe
+def print_board(board):
+    print("  1 2 3")
+    row_labels = ["A", "B", "C"]
+    for idx, row in enumerate(board):
+        print(row_labels[idx] + " " + " | ".join(row))
+        if idx < 2:
+            print("  -+-+-")
+
+def check_win(board, player):
+    for row in board:
+        if all(s == player for s in row):
+            return True
+    for col in range(3):
+        if all(row[col] == player for row in board):
+            return True
+    if all(board[i][i] == player for i in range(3)) or all(board[i][2-i] == player for i in range(3)):
+        return True
+    return False
+
+def get_computer_move(board):
+    available_moves = [(i, j) for i in range(3) for j in range(3) if board[i][j] == " "]
+    return random.choice(available_moves)
+
+def tic_tac_toe():
+    board = [[" " for _ in range(3)] for _ in range(3)]
+    current_player = "X"
+    move_dict = {"A": 0, "B": 1, "C": 2, "1": 0, "2": 1, "3": 2}
+    for _ in range(9):
+        print_board(board)
+        if current_player == "X":
+            move = input("Player X, enter your move (e.g., A1, B2): ").upper()
+            if len(move) != 2 or move[0] not in "ABC" or move[1] not in "123":
+                print("Invalid input. Please enter a valid move.")
+                continue
+            row, col = move_dict[move[0]], move_dict[move[1]]
+        else:
+            row, col = get_computer_move(board)
+            print(f"Computer O plays at {row + 1}{col + 1}")
+
+        if board[row][col] == " ":
+            board[row][col] = current_player
+            if check_win(board, current_player):
+                print_board(board)
+                print(f"Player {current_player} wins!")
+                return
+            current_player = "O" if current_player == "X" else "X"
+        else:
+            print("Invalid move, try again.")
+    print_board(board)
+    print("It's a tie!")
+
+# Politics
+def politics_conversation():
+    prompts = [
+        "How do you think social media influences political opinions",
+        "Do you believe voting should be mandatory",
+        "What are your thoughts on the role of technology in modern elections",
+        "How important is freedom of speech in politics",
+        "Do you think young people are more politically active today than in the past",
+        "What is your opinion on the impact of political debates on public opinion",
+        "How do you feel about the role of education in shaping political awareness",
+        "Do you think political campaigns should have spending limits",
+        "What are your thoughts on the influence of lobbyists in politics",
+        "How do you think global events shape national politics",
+        "What is your take on the role of women in politics",
+        "Do you think political polarization is increasing or decreasing",
+        "How do you feel about the use of AI in political decision-making",
+        "What is your opinion on the role of the media in politics",
+        "Do you think political leaders should be held to higher ethical standards",
+        "How do you feel about the balance of power between local and federal governments",
+        "What is your take on the importance of political transparency",
+        "Do you think political protests are effective in bringing about change",
+        "How do you feel about the role of international organizations in global politics",
+        "What is your opinion on the impact of climate change policies on politics"
+    ]
+    follow_ups = [
+        "Why do you think that is important",
+        "What solutions would you propose for this issue",
+        "Do you feel this perspective is widely shared",
+        "How do you think this impacts everyday life",
+        "Can you think of a historical example that relates to this",
+        "What role do you think younger generations play in this"
+    ]
+
+    print("Lets talk politics!")
+    selected_prompt = random.choice(prompts)
+    print(selected_prompt)
+    response = input("Your thoughts: ").strip()
+    if response:
+        follow_up = random.choice(follow_ups)
+        print(follow_up)
+        input("Your answer: ").strip()
+    print("Thanks for sharing your thoughts on politics!")
+
+# Weathr
+def weather_conversation():
+    prompts = [
+        "What is your favorite type of weather and why",
+        "How does the weather today make you feel",
+        "Do you believe the weather can affect someones mood",
+        "What is the most extreme weather you have ever experienced",
+        "Do you prefer hot summers or cold winters",
+        "What is your ideal weather for a vacation",
+        "Do you enjoy watching thunderstorms, or do they make you nervous",
+        "If you could control the weather for a day, what would you choose",
+        "What is the weather like in your favorite place to visit",
+        "Do you like snow, or do you find it more of a hassle",
+        "Have you ever experienced a hurricane, tornado, or other extreme weather event",
+        "What do you usually do on a rainy day",
+        "Do you think climate change has affected the weather where you live",
+        "What is the perfect weather for outdoor activities like hiking or picnicking",
+        "Have you ever seen a rainbow or any other rare weather phenomenon",
+        "Do you check the weather forecast daily or just go with the flow",
+        "What is the hottest or coldest temperature you have ever experienced",
+        "Do you prefer clear skies, or do you enjoy overcast days",
+        "If you were designing a city, how would you adapt it to the local weather",
+        "What is your favorite season, and how does its weather make it special to you"
+    ]
+    follow_ups = [
+        "Why do you think that weather appeals to you",
+        "Does this weather remind you of any special memories",
+        "How do you think this weather impacts the environment",
+        "What activities do you enjoy most in this weather",
+        "Does this weather make you feel more productive or relaxed",
+        "How do people in your area adapt to this weather"
+    ]
+
+    print("Lets talk about the weather!")
+    selected_prompt = random.choice(prompts)
+    print(selected_prompt)
+    response = input("Your thoughts: ").strip()
+    if response:
+        follow_up = random.choice(follow_ups)
+        print(follow_up)
+        input("Your answer: ").strip()
+    print("Thanks for sharing your thoughts on weather!")
+
+# Misc
+brainrot_words = ["skibidi", "sigma", "gyatt", "rizz", "zizzle", "whackadoodle", "Fortnite", "Kanye", "Kai cenat", "Mr beast", "Roblox", "ahh", "Before GTA 6", "Ai", "Baby Gronk", "Case oh", "chat", "Chad", "Gigga Chad"]
+jokes = [
+    "Why dont scientists trust atoms Because they make up everything",
+    "What do you get when you cross a snowman and a vampire Frostbite",
+    "Why was the math book sad Because it had too many problems",
+    "I told my wife she was drawing her eyebrows too high She looked surprised",
+    "Knock knock Whos there Orange Orange who Knock knock Whos there Me",
+    "Why should you never take sides in an argument at the dinner table Trick question Its the perfect time to take sides because no ones paying attention Bring Tupperware",
+    "Where do rainbows go when they have been bad To prism, so they have time to reflect on what they have done",
+    "Dogs cant operate MRI machines But catscan",
+    "E",
+    "What is long and sticky A stick",
+    "You know what else is massive LoW tApEr FaDe"
+]
+
+def generate_brainrot_word():
+    return random.choice(brainrot_words)
+
+def generate_joke():
+    return random.choice(jokes)
+
+def get_current_time():
+    t = time.localtime(time.time())
+    return "Current Time: " + time.asctime(t)
+
+# Calculater
+def calculator():
+    try:
+        expression = input("Enter a mathematical expression (e.g., 2 + 2, 3 * 4): ")
+        result = eval(expression)
+        print(f"The result is: {result}")
+    except Exception as e:
+        print(f"Error: {e}")
+
+# Main
+def main():
+    while True:
+        command = input("Enter command: Joke, Brainrot, Time, Politics, Weather, Calculator, Tic Tac Toe, Exit: ").strip().lower()
+        if command == "brainrot":
+            print("Brainrot word:", generate_brainrot_word())
+        elif command == "politics":
+            politics_conversation()
+        elif command == "weather":
+            weather_conversation()
+        elif command == "calculator":
+            calculator()
+        elif command == "tic tac toe":
+            tic_tac_toe()
+        elif command == "joke":
+            print("Joke:", generate_joke())
+        elif command == "time":
+            print(get_current_time())
+        elif command == "exit":
+            print("Exiting program.")
+if __name__ == "__main__":
+    main()
