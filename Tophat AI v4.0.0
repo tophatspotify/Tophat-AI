@@ -1,0 +1,317 @@
+
+import random
+import time
+import json
+import os
+from colorama import init, Fore, Style
+
+# Initialize colorama
+init(autoreset=True)
+
+# --- Global Data ---
+brainrot_words = ["skibidi", "sigma", "gyatt", "rizz", "zizzle", "whackadoodle", "Fortnite", "Kanye", "Kai cenat", "Mr beast", "Roblox"]
+jokes = [
+    "Why don't scientists trust atoms? Because they make up everything!",
+    "What do you get when you cross a snowman and a vampire? Frostbite.",
+    "Why was the math book sad? Because it had too many problems.",
+    "I told my wife she was drawing her eyebrows too high. She looked surprised.",
+    "Knock knock! Who's there? Orange! Orange who? Orange you glad I didn't say banana?",
+    "Where do rainbows go when they've been bad? To prism, so they have time to reflect on their actions.",
+    "Dogs can't operate MRI machines. But catscan."
+]
+
+MEMORY_FILE = "bot_memory.json"
+LEADERBOARD_FILE = "leaderboard.json"
+
+# Load memory
+if os.path.exists(MEMORY_FILE):
+    with open(MEMORY_FILE, "r") as f:
+        memory = json.load(f)
+else:
+    memory = {}
+
+# Load leaderboard
+if os.path.exists(LEADERBOARD_FILE):
+    with open(LEADERBOARD_FILE, "r") as f:
+        leaderboard = json.load(f)
+else:
+    leaderboard = {"TicTacToe": [], "NumberGuess": []}
+
+# Conversation history
+conversation_history = []
+
+# Personality mode
+personality = "friendly"  # options: friendly, sarcastic, funny
+
+# --- Utility Functions ---
+def slow_print(text, delay=0.03, color=Fore.WHITE):
+    for char in text:
+        print(color + char, end="", flush=True)
+        time.sleep(delay)
+    print(Style.RESET_ALL)
+
+def get_current_time():
+    return time.asctime(time.localtime())
+
+def timer(seconds):
+    for i in range(1, seconds+1):
+        minutes = i // 60
+        sec = i % 60
+        print(f"{minutes} minutes and {sec} seconds passed")
+        time.sleep(1)
+
+def calculator():
+    try:
+        expr = input("Enter expression (e.g., 2+2): ")
+        result = eval(expr)
+        print(Fore.CYAN + f"Result: {result}")
+    except:
+        print(Fore.RED + "Invalid expression!")
+
+def save_memory():
+    with open(MEMORY_FILE, "w") as f:
+        json.dump(memory,f)
+
+def save_leaderboard():
+    with open(LEADERBOARD_FILE,"w") as f:
+        json.dump(leaderboard,f)
+
+# --- Fun Features ---
+def generate_brainrot_sentence():
+    return " ".join(random.sample(brainrot_words, k=random.randint(2,4)))
+
+def generate_joke():
+    return random.choice(jokes)
+
+def ascii_art_example():
+    arts = [
+        r"""
+   /\_/\  
+  ( o.o ) 
+   > ^ <  
+""",
+        r"""
+  |\_/|                  
+  | @ @   Woof! 
+  |   <>              _  
+  |  _/\------____ ((| |))
+  |               `--' |   
+ ____|_       ___|   |___.' 
+/_/_____/____/_______|
+"""
+    ]
+    return random.choice(arts)
+
+def random_challenge():
+    challenges = [
+        "Try saying 'skibidi rizz' 5 times fast!",
+        "Do 10 jumping jacks",
+        "Write a short funny story with 3 brainrot words",
+        "Draw a quick doodle of Mr beast"
+    ]
+    return random.choice(challenges)
+
+# --- Mini Games ---
+# Tic Tac Toe
+def print_board(board):
+    print("  1 2 3")
+    for idx,row in enumerate(board):
+        print(chr(65+idx) + " " + " | ".join(row))
+        if idx<2:
+            print("  -+-+-")
+
+def check_win(board,player):
+    for row in board:
+        if all(s==player for s in row):
+            return True
+    for col in range(3):
+        if all(row[col]==player for row in board):
+            return True
+    if all(board[i][i]==player for i in range(3)) or all(board[i][2-i]==player for i in range(3)):
+        return True
+    return False
+
+def get_computer_move(board):
+    for i in range(3):
+        for j in range(3):
+            if board[i][j]==" ":
+                board[i][j]="X"
+                if check_win(board,"X"):
+                    board[i][j]=" "
+                    return i,j
+                board[i][j]=" "
+    moves = [(i,j) for i in range(3) for j in range(3) if board[i][j]==" "]
+    return random.choice(moves)
+
+def tic_tac_toe():
+    board = [[" "]*3 for _ in range(3)]
+    player="X"
+    move_dict={"A":0,"B":1,"C":2,"1":0,"2":1,"3":2}
+    for _ in range(9):
+        print_board(board)
+        if player=="X":
+            move = input("Your move (A1,B2...): ").upper()
+            if len(move)!=2 or move[0] not in "ABC" or move[1] not in "123":
+                print(Fore.RED+"Invalid move")
+                continue
+            row,col = move_dict[move[0]], move_dict[move[1]]
+        else:
+            row,col = get_computer_move(board)
+            print(Fore.YELLOW+f"Computer O moves {chr(row+65)}{col+1}")
+        if board[row][col]==" ":
+            board[row][col]=player
+            if check_win(board,player):
+                print_board(board)
+                winner = "You" if player=="X" else "Computer"
+                slow_print(Fore.GREEN+f"{winner} won!")
+                leaderboard["TicTacToe"].append({"winner":winner})
+                save_leaderboard()
+                return
+            player="O" if player=="X" else "X"
+        else:
+            print(Fore.RED+"Cell occupied")
+    print_board(board)
+    slow_print(Fore.CYAN+"It's a tie!")
+
+# Rock-Paper-Scissors
+def rock_paper_scissors():
+    options = ["rock","paper","scissors"]
+    comp = random.choice(options)
+    user = input("Rock, Paper, Scissors? ").lower()
+    if user not in options:
+        print(Fore.RED+"Invalid choice!")
+        return
+    print(f"Computer chose {comp}")
+    if user==comp:
+        print(Fore.CYAN+"Tie!")
+    elif (user=="rock" and comp=="scissors") or (user=="paper" and comp=="rock") or (user=="scissors" and comp=="paper"):
+        print(Fore.GREEN+"You win!")
+    else:
+        print(Fore.YELLOW+"Computer wins!")
+
+# Number Guessing
+def number_guess():
+    number = random.randint(1,100)
+    attempts = 0
+    slow_print(Fore.CYAN+"Guess a number 1-100!")
+    while True:
+        try:
+            guess = int(input("Your guess: "))
+            attempts+=1
+            if guess<number:
+                print("Too low!")
+            elif guess>number:
+                print("Too high!")
+            else:
+                slow_print(Fore.GREEN+f"Correct! {attempts} attempts")
+                leaderboard["NumberGuess"].append({"attempts":attempts})
+                save_leaderboard()
+                break
+        except:
+            print(Fore.RED+"Enter valid number")
+
+# Text Adventure
+def text_adventure():
+    slow_print(Fore.CYAN+"You wake up in a mysterious forest. Paths lead left or right.")
+    choice1 = input("Left or Right? ").lower()
+    if choice1=="left":
+        slow_print("You find a hidden cave with a treasure!")
+    else:
+        slow_print("A wild creature appears! You run back safely.")
+
+# --- Chatbot ---
+def chatbot_response(user_input):
+    user_input_lower = user_input.lower()
+    conversation_history.append(user_input_lower)
+    # Multi-keyword memory
+    for keyword in memory:
+        if all(k in user_input_lower for k in keyword.split()):
+            return random.choice(memory[keyword])
+    # Mood detection
+    if any(word in user_input_lower for word in ["sad","unhappy","bad"]):
+        response = random.choice(["I'm sorry!", "Hope things get better!"])
+        if len(conversation_history)>1:
+            response += f" Earlier you said: '{conversation_history[-2]}'"
+        return response
+    if any(word in user_input_lower for word in ["happy","good","great"]):
+        response = random.choice(["That's awesome!", "Glad to hear!"])
+        if len(conversation_history)>1:
+            response += f" Before this, you said: '{conversation_history[-2]}'"
+        return response
+    # Unknown input: teach
+    print("I don't know this. Teach me a response:")
+    new_response = input("You: ")
+    memory[user_input_lower] = [new_response]
+    save_memory()
+    return new_response
+
+# --- Main Menu ---
+def main():
+    global personality
+    slow_print(Fore.CYAN+"Welcome to Bot v3!")
+    slow_print(Fore.YELLOW+f"Daily Message: {random.choice([generate_joke(), generate_brainrot_sentence(), random_challenge()])}")
+    while True:
+        print(Fore.MAGENTA+"\n--- Menu ---")
+        print("1. Chat")
+        print("2. Brainrot sentence")
+        print("3. Joke")
+        print("4. ASCII Art")
+        print("5. Challenge")
+        print("6. Current time")
+        print("7. Timer")
+        print("8. Calculator")
+        print("9. Tic Tac Toe")
+        print("10. Rock-Paper-Scissors")
+        print("11. Number guessing")
+        print("12. Text Adventure")
+        print("13. View Leaderboard")
+        print("14. Change Personality")
+        print("0. Exit")
+        choice = input("Choose: ")
+        if choice=="1":
+            user_input = input("You: ")
+            slow_print(chatbot_response(user_input))
+        elif choice=="2":
+            slow_print(generate_brainrot_sentence())
+        elif choice=="3":
+            slow_print(generate_joke())
+        elif choice=="4":
+            print(ascii_art_example())
+        elif choice=="5":
+            slow_print(random_challenge())
+        elif choice=="6":
+            slow_print(get_current_time())
+        elif choice=="7":
+            try:
+                seconds = int(input("Seconds: "))
+                timer(seconds)
+            except:
+                print(Fore.RED+"Enter valid number")
+        elif choice=="8":
+            calculator()
+        elif choice=="9":
+            tic_tac_toe()
+        elif choice=="10":
+            rock_paper_scissors()
+        elif choice=="11":
+            number_guess()
+        elif choice=="12":
+            text_adventure()
+        elif choice=="13":
+            print(json.dumps(leaderboard, indent=2))
+        elif choice=="14":
+            slow_print("Choose personality: friendly, sarcastic, funny")
+            new_personality = input("Personality: ").lower()
+            if new_personality in ["friendly","sarcastic","funny"]:
+                personality = new_personality
+                slow_print(f"Personality set to {personality}")
+            else:
+                print(Fore.RED+"Invalid personality")
+        elif choice=="0":
+            slow_print(Fore.CYAN+"Goodbye!")
+            break
+        else:
+            print(Fore.RED+"Invalid option")
+
+if __name__=="__main__":
+    main()
